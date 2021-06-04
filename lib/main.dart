@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_collector/add_word.dart';
 
 void main() {
   runApp(WCApp());
@@ -27,7 +28,12 @@ class WCHomePage extends StatelessWidget {
         ),
         body: Center(child: Text("Collect Your Words Here...")),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(snackBar),
+          onPressed: () => {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => WCAddWordPage()),
+            )
+          },
           tooltip: 'Add Word',
           child: Icon(Icons.add),
         ));
