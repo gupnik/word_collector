@@ -42,13 +42,14 @@ class WCWordRepository {
     });
   }
 
-  Future<void> insertWord(WCWord word) async {
+  Future<WCWord> insertWord(WCWord word) async {
     final db = await _database;
-    await db.insert(
+    int id = await db.insert(
       'words',
       word.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return WCWord(word.name, id: id, meaning: word.meaning);
   }
 
   Future<void> updateWord(WCWord word) async {

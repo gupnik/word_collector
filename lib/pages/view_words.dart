@@ -22,7 +22,9 @@ class _WCViewWordsPageState extends State<WCViewWordsPage> {
         appBar: AppBar(
           title: Text("Word Collector"),
         ),
-        body: WCWordList(_words),
+        body: WCWordList(_words, (WCWord word) {
+          _deleteWord(word);
+        }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateAndDisplayWord(context);
@@ -39,6 +41,20 @@ class _WCViewWordsPageState extends State<WCViewWordsPage> {
     });
   }
 
+  void _deleteWord(WCWord word) async {
+    await WCWordRepository().deleteWord(word.id);
+    setState(() {
+      _words.remove(word);
+    });
+  }
+
+  void _addWord(WCWord word) async {
+    final updatedWord = await WCWordRepository().insertWord(word);
+    setState(() {
+      _words.add(updatedWord);
+    });
+  }
+
   void _navigateAndDisplayWord(BuildContext context) async {
     final word = await Navigator.push(
       context,
@@ -49,9 +65,7 @@ class _WCViewWordsPageState extends State<WCViewWordsPage> {
       return;
     }
 
-    setState(() {
-      _words.add(word);
-    });
+    _addWord(word);
 
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
