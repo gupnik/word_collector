@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:word_collector/models/word.dart';
 
 class WCAddWordPage extends StatelessWidget {
   final _wordNameController = TextEditingController();
+
+  final _wordMeaningController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +15,25 @@ class WCAddWordPage extends StatelessWidget {
         body: Center(
             child: Padding(
                 padding: EdgeInsets.all(20),
-                child: TextField(
-                    controller: _wordNameController,
-                    onChanged: (value) => {}))),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Word"),
+                      TextField(
+                          controller: _wordNameController,
+                          onChanged: (value) => {}),
+                      SizedBox(height: 50),
+                      Text("Meaning"),
+                      TextField(
+                          controller: _wordMeaningController,
+                          onChanged: (value) => {})
+                    ]))),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             if (_wordNameController.text.isNotEmpty) {
-              Navigator.pop(context, _wordNameController.text);
+              final word = WCWord(_wordNameController.text,
+                  meaning: _wordMeaningController.text);
+              Navigator.pop(context, word);
             }
           },
           tooltip: 'Done',

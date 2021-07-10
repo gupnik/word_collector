@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:word_collector/models/word.dart';
 
 class WCWordList extends StatelessWidget {
-  final List<String> _words;
+  final List<WCWord> _words;
 
   WCWordList(this._words) : super();
 
@@ -12,7 +13,8 @@ class WCWordList extends StatelessWidget {
         itemBuilder: (context, index) {
           final word = _words[index];
 
-          return ListTile(title: Text('$word'));
+          return ListTile(
+              title: Text('${word.name}'), subtitle: Text('${word.meaning}'));
         });
   }
 }

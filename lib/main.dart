@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_collector/add_word.dart';
+import 'package:word_collector/models/word.dart';
 import 'package:word_collector/word_list.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class WCHomePage extends StatefulWidget {
 }
 
 class _WCHomePageState extends State<WCHomePage> {
-  final List<String> _words = [];
+  final List<WCWord> _words = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,6 @@ class _WCHomePageState extends State<WCHomePage> {
 
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('Added $word')));
+      ..showSnackBar(SnackBar(content: Text('Added ${word.name}')));
   }
 }
