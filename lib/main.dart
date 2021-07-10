@@ -28,14 +28,22 @@ class WCHomePage extends StatelessWidget {
         ),
         body: Center(child: Text("Collect Your Words Here...")),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => WCAddWordPage()),
-            )
+          onPressed: () {
+            _navigateAndDisplayWord(context);
           },
           tooltip: 'Add Word',
           child: Icon(Icons.add),
         ));
+  }
+
+  void _navigateAndDisplayWord(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => WCAddWordPage()),
+    );
+
+    ScaffoldMessenger.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text('$result')));
   }
 }
