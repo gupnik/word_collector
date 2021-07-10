@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_collector/models/word.dart';
+import 'package:word_collector/repositories/word_repository.dart';
 
 class WCAddWordPage extends StatelessWidget {
   final _wordNameController = TextEditingController();
@@ -29,10 +30,11 @@ class WCAddWordPage extends StatelessWidget {
                           onChanged: (value) => {})
                     ]))),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             if (_wordNameController.text.isNotEmpty) {
               final word = WCWord(_wordNameController.text,
                   meaning: _wordMeaningController.text);
+              await WCWordRepository().insertWord(word);
               Navigator.pop(context, word);
             }
           },
