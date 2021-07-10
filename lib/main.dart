@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_collector/add_word.dart';
+import 'package:word_collector/word_list.dart';
 
 void main() {
   runApp(WCApp());
@@ -18,15 +19,21 @@ class WCApp extends StatelessWidget {
   }
 }
 
-class WCHomePage extends StatelessWidget {
-  final snackBar = SnackBar(content: Text('Coming Soon!'));
+class WCHomePage extends StatefulWidget {
+  @override
+  _WCHomePageState createState() => _WCHomePageState();
+}
+
+class _WCHomePageState extends State<WCHomePage> {
+  final List<String> _words = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text("Word Collector"),
         ),
-        body: Center(child: Text("Collect Your Words Here...")),
+        body: WCWordList(_words),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateAndDisplayWord(context);
@@ -37,13 +44,17 @@ class WCHomePage extends StatelessWidget {
   }
 
   void _navigateAndDisplayWord(BuildContext context) async {
-    final result = await Navigator.push(
+    final word = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => WCAddWordPage()),
     );
 
+    setState(() {
+      _words.add(word);
+    });
+
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('$result')));
+      ..showSnackBar(SnackBar(content: Text('Added $word')));
   }
 }
