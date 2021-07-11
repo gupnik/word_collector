@@ -1,10 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:word_collector/models/word.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class WCWordService {
-  final _wordsCollection = FirebaseFirestore.instance.collection('words');
+  var _wordsCollection;
+
+  WCWordService() {
+    FirebaseAuth.instance.userChanges().listen((event) {
+      if (event != null) {
+        _wordsCollection = FirebaseFirestore.instance
+            .collection("users")
+            .doc(event.uid)
+            .collection('words');
+      }
+    });
+  }
 
   Future<List<WCWord>> words() async {
+    if (_wordsCollection == null) {
+      return [];
+    }
+
     final snapShot = await _wordsCollection.get();
     final maps = snapShot.docs;
 
@@ -15,6 +31,10 @@ class WCWordService {
   }
 
   Future<void> addWord(WCWord word) async {
+    if (_wordsCollection == null) {
+      return;
+    }
+
     return _wordsCollection
         .add(word.toMap())
         .then((value) => print("Word Added: ${value.id}"))
