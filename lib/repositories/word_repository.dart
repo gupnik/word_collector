@@ -2,6 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:word_collector/models/word.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:word_collector/services/word_service.dart';
 
 class WCWordRepository {
   static final WCWordRepository _repository = WCWordRepository._internal();
@@ -11,6 +12,8 @@ class WCWordRepository {
   }
 
   WCWordRepository._internal();
+
+  final wordService = WCWordService();
 
   Database _db;
 
@@ -29,6 +32,8 @@ class WCWordRepository {
   }
 
   Future<List<WCWord>> words() async {
+    return await wordService.words();
+
     if (kIsWeb) {
       return [];
     }
@@ -44,6 +49,8 @@ class WCWordRepository {
   }
 
   Future<WCWord> insertWord(WCWord word) async {
+    await wordService.addWord(word);
+
     if (kIsWeb) {
       return word;
     }

@@ -27,6 +27,7 @@ dependencies:
     path:
     firebase_core:
     firebase_auth:
+    cloud_firestore:
     flutter_signin_button:
     google_sign_in:
 
