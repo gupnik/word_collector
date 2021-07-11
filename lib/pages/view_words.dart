@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:word_collector/models/word.dart';
 import 'package:word_collector/pages/add_word.dart';
 import 'package:word_collector/components/word_list.dart';
+import 'package:word_collector/pages/auth/sign_in_page.dart';
+import 'package:word_collector/pages/auth/susi_page.dart';
 import 'package:word_collector/repositories/word_repository.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class WCViewWordsPage extends StatefulWidget {
   @override
@@ -10,10 +15,20 @@ class WCViewWordsPage extends StatefulWidget {
 }
 
 class _WCViewWordsPageState extends State<WCViewWordsPage> {
+  User _user;
   final List<WCWord> _words = [];
 
-  _WCViewWordsPageState() {
+  void _pushPage(BuildContext context, Widget page) {
+    Navigator.of(context) /*!*/ .push(
+      MaterialPageRoute<void>(builder: (_) => page),
+    );
+  }
+
+  @override
+  void initState() {
+    _auth.userChanges().listen((event) => setState(() => _user = event));
     _loadWords();
+    super.initState();
   }
 
   @override
@@ -21,6 +36,19 @@ class _WCViewWordsPageState extends State<WCViewWordsPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Word Collector"),
+          actions: [
+            _user == null
+                ? IconButton(
+                    icon: Icon(Icons.person_add),
+                    onPressed: () {
+                      _pushPage(context, AuthTypeSelector());
+                    })
+                : IconButton(
+                    icon: Icon(Icons.verified_user),
+                    onPressed: () {
+                      _pushPage(context, SignInPage());
+                    })
+          ],
         ),
         body: WCWordList(_words, (WCWord word) {
           _deleteWord(word);

@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:word_collector/models/word.dart';
@@ -11,9 +9,7 @@ class WCWordRepository {
     return _repository;
   }
 
-  WCWordRepository._internal() {
-    WidgetsFlutterBinding.ensureInitialized();
-  }
+  WCWordRepository._internal();
 
   Database _db;
 

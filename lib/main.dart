@@ -1,7 +1,12 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:word_collector/pages/view_words.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(WCApp());
 }
 
