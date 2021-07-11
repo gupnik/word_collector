@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:word_collector/models/word.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class WCWordRepository {
   static final WCWordRepository _repository = WCWordRepository._internal();
@@ -28,6 +29,10 @@ class WCWordRepository {
   }
 
   Future<List<WCWord>> words() async {
+    if (kIsWeb) {
+      return [];
+    }
+
     final db = await _database;
 
     final List<Map<String, dynamic>> maps = await db.query('words');
@@ -39,6 +44,10 @@ class WCWordRepository {
   }
 
   Future<WCWord> insertWord(WCWord word) async {
+    if (kIsWeb) {
+      return word;
+    }
+
     final db = await _database;
     int id = await db.insert(
       'words',
@@ -49,6 +58,10 @@ class WCWordRepository {
   }
 
   Future<void> updateWord(WCWord word) async {
+    if (kIsWeb) {
+      return;
+    }
+
     final db = await _database;
 
     await db.update(
@@ -60,6 +73,10 @@ class WCWordRepository {
   }
 
   Future<void> deleteWord(int id) async {
+    if (kIsWeb) {
+      return;
+    }
+
     final db = await _database;
 
     await db.delete(
